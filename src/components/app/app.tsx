@@ -16,12 +16,22 @@ import styles from './app.module.css';
 
 import { AppHeader } from '@components';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from '../../services/store';
 import { useEffect } from 'react';
+import { getUser } from '../../services/slices/authSlice';
+import { AppDispatch, RootState } from '../../services/store';
 
-const App = () => {
+const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((state: RootState) => state.auth);
   const background = location.state?.background;
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
 
   const handleModalClose = () => {
     navigate(-1);
@@ -29,7 +39,7 @@ const App = () => {
 
   return (
     <div className={styles.app}>
-      <AppHeader userName='' />
+      <AppHeader userName={user?.name || ''} />
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
@@ -76,5 +86,11 @@ const App = () => {
     </div>
   );
 };
+
+const App = () => (
+  <Provider store={store}>
+    <AppContent />
+  </Provider>
+);
 
 export default App;

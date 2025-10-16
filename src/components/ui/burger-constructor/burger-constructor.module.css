@@ -14,9 +14,6 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
 }
 
 .elements::-webkit-scrollbar {
@@ -43,62 +40,10 @@
     scrollbar-color: #8585ad #2f2f37;
 }
 
-/* Стили для перетаскиваемых элементов */
-.draggable_element {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    cursor: grab;
-    transition: all 0.2s ease;
-}
-
-.draggable_element:active {
-    cursor: grabbing;
-}
-
-.draggable_element:hover {
-    opacity: 0.8;
-}
-
-/* Стиль когда элемент перетаскивается */
-.draggable_element.dragging {
-    opacity: 0.5;
-    box-shadow: 0 0 10px rgba(76, 76, 255, 0.5);
-}
-
-.element_fullwidth {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 536px;
-}
-
-/* Стили для иконки перетаскивания */
-.drag_icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    cursor: grab;
-    opacity: 0.5;
-    transition: opacity 0.2s ease;
-}
-
-.drag_icon:hover {
-    opacity: 1;
-}
-
-.drag_icon:active {
-    cursor: grabbing;
-}
-
 .total {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-top: auto;
 }
 
 .cost {
@@ -138,6 +83,25 @@
     border-radius: var(--bottom-constructor-item-border-radius);
 }
 
+.noFilling {
+    box-sizing: border-box;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--common-border-radius-s);
+    background: var(--background-element);
+    min-height: 80px;
+    font-family: 'Jet Brains Mono';
+    font-size: 16px;
+    line-height: 24px;
+    color: #f2f2f3;
+    margin-left: 0;
+    margin-bottom: 16px;
+    max-width: 536px;
+    width: 100%;
+}
+
 .element {
     display: flex;
     align-items: center;
@@ -146,4 +110,11 @@
 
 .element:last-child {
     margin-bottom: 0;
+}
+
+.element_fullwidth {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 536px;
 }

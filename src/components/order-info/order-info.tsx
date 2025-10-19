@@ -4,37 +4,22 @@ import { useSelector, useDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 import { OrderInfoUI } from '@ui';
 import { TIngredient, TOrder } from '@utils-types';
-import { RootState, AppDispatch } from '../../services/store';
 import { fetchFeeds } from '../../services/slices/feedSlice';
 import { fetchProfileOrders } from '../../services/slices/profileOrdersSlice';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 type TIngredientsWithCount = {
   [key: string]: TIngredient & { count: number };
-};
-
-type TOrderInfoData = {
-  createdAt: string;
-  ingredients: string[];
-  _id: string;
-  status: string;
-  name: string;
-  updatedAt: string;
-  number: number;
-  ingredientsInfo: TIngredientsWithCount;
-  date: Date;
-  total: number;
 };
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
   const dispatch = useDispatch();
 
-  const { orders: feedOrders } = useSelector((state: RootState) => state.feed);
-  const { orders: profileOrders } = useSelector(
-    (state: RootState) => state.profileOrders
-  );
-  const ingredients = useSelector(
-    (state: RootState) => state.ingredients.ingredients
+  const { orders: feedOrders } = useSelector((state) => state.feed);
+  const { orders: profileOrders } = useSelector((state) => state.profileOrders);
+  const { ingredients, loading: ingredientsLoading } = useSelector(
+    (state) => state.ingredients
   );
 
   // Загружаем данные если их нет
@@ -45,7 +30,10 @@ export const OrderInfo: FC = () => {
     if (profileOrders.length === 0) {
       dispatch(fetchProfileOrders());
     }
-  }, [dispatch, feedOrders.length, profileOrders.length]);
+    if (ingredients.length === 0) {
+      dispatch(fetchIngredients());
+    }
+  }, [dispatch, feedOrders.length, profileOrders.length, ingredients.length]);
 
   // Находим заказ по номеру
   const orderData = useMemo((): TOrder | null => {
@@ -66,35 +54,30 @@ export const OrderInfo: FC = () => {
     return null;
   }, [number, feedOrders, profileOrders]);
 
-  /* Готовим данные для отображения */
-  const orderInfo = useMemo((): TOrderInfoData | null => {
-    if (!orderData || !ingredients.length) return null;
+  // Готовим данные для отображения
+  const orderInfo = useMemo(() => {
+    if (!orderData) return null;
 
     const date = new Date(orderData.createdAt);
+    const ingredientsInfo: TIngredientsWithCount = {};
+    let total = 0;
 
-    const ingredientsInfo = orderData.ingredients.reduce(
-      (acc: TIngredientsWithCount, item: string) => {
-        if (!acc[item]) {
-          const ingredient = ingredients.find((ing) => ing._id === item);
-          if (ingredient) {
-            acc[item] = {
+    if (ingredients.length > 0) {
+      orderData.ingredients.forEach((ingredientId: string) => {
+        const ingredient = ingredients.find((ing) => ing._id === ingredientId);
+        if (ingredient) {
+          if (!ingredientsInfo[ingredientId]) {
+            ingredientsInfo[ingredientId] = {
               ...ingredient,
               count: 1
             };
+          } else {
+            ingredientsInfo[ingredientId].count++;
           }
-        } else {
-          acc[item].count++;
+          total += ingredient.price;
         }
-
-        return acc;
-      },
-      {}
-    );
-
-    const total = Object.values(ingredientsInfo).reduce(
-      (acc: number, item) => acc + item.price * item.count,
-      0
-    );
+      });
+    }
 
     return {
       ...orderData,
@@ -104,7 +87,7 @@ export const OrderInfo: FC = () => {
     };
   }, [orderData, ingredients]);
 
-  if (!orderInfo) {
+  if (!orderInfo || ingredientsLoading) {
     return <Preloader />;
   }
 

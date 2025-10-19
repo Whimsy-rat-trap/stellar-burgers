@@ -1,6 +1,6 @@
 import { FC, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/store';
 import { Preloader } from '@ui';
 import { OrderInfoUI } from '@ui';
 import { TIngredient, TOrder } from '@utils-types';
@@ -27,7 +27,7 @@ type TOrderInfoData = {
 
 export const OrderInfo: FC = () => {
   const { number } = useParams<{ number: string }>();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
 
   const { orders: feedOrders } = useSelector((state: RootState) => state.feed);
   const { orders: profileOrders } = useSelector(

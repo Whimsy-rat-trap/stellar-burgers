@@ -17,7 +17,8 @@ import styles from './app.module.css';
 
 import { AppHeader } from '@components';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/store';
 import store from '../../services/store';
 import { useEffect } from 'react';
 import { getUser } from '../../services/slices/authSlice';
@@ -26,7 +27,7 @@ import { AppDispatch, RootState } from '../../services/store';
 const AppContent = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const background = location.state?.background;
 

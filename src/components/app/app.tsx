@@ -1,28 +1,32 @@
-import { ConstructorPage } from '@pages';
-import { Login } from '@pages';
-import { Register } from '@pages';
-import { ForgotPassword } from '@pages';
-import { ResetPassword } from '@pages';
-import { Profile } from '@pages';
-import { ProfileOrders } from '@pages';
-import { Feed } from '@pages';
-import { NotFound404 } from '@pages';
-import { IngredientDetails } from '@components';
-import { OrderInfo } from '@components';
-import { Modal } from '@components';
+import {
+  ConstructorPage,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  ProfileOrders,
+  Feed,
+  NotFound404,
+  IngredientPage
+} from '@pages';
+
+import { IngredientDetails, OrderInfo, Modal, AppHeader } from '@components';
+
 import { ProtectedRoute } from '../protected-route/protected-route';
 
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader } from '@components';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
 import { useSelector, useDispatch } from '../../services/store';
 import store from '../../services/store';
+import { RootState } from '../../services/store';
 import { useEffect } from 'react';
+
 import { getUser } from '../../services/slices/authSlice';
-import { AppDispatch, RootState } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const AppContent = () => {
@@ -48,7 +52,7 @@ const AppContent = () => {
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/ingredients/:id' element={<IngredientPage />} />
 
         {/* Защищенные роуты только для неавторизованных */}
         <Route

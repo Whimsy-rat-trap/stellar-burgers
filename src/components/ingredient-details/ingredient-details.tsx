@@ -13,7 +13,9 @@ export const IngredientDetails: FC = () => {
   const dispatch = useDispatch();
 
   const { ingredient } = useSelector((state) => state.ingredientDetails);
-  const { ingredients } = useSelector((state) => state.ingredients);
+  const { ingredients, loading: ingredientsLoading } = useSelector(
+    (state) => state.ingredients
+  );
 
   useEffect(() => {
     if (id && ingredients.length > 0) {
@@ -28,9 +30,19 @@ export const IngredientDetails: FC = () => {
     };
   }, [id, ingredients, dispatch]);
 
-  if (!ingredient) {
+  // Показываем прелоадер только если ингредиенты еще загружаются
+  if (ingredientsLoading) {
     return <Preloader />;
   }
 
-  return <IngredientDetailsUI ingredientData={ingredient} />;
+  // Если ингредиенты загружены, но конкретный ингредиент не найден
+  if (!ingredient && !ingredientsLoading) {
+    return (
+      <div className='text text_type_main-default pt-10'>
+        Ингредиент не найден
+      </div>
+    );
+  }
+
+  return <IngredientDetailsUI ingredientData={ingredient!} />;
 };

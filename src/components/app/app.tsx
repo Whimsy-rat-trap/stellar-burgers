@@ -23,6 +23,7 @@ import store from '../../services/store';
 import { useEffect } from 'react';
 import { getUser } from '../../services/slices/authSlice';
 import { AppDispatch, RootState } from '../../services/store';
+import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 
 const AppContent = () => {
   const location = useLocation();
@@ -33,6 +34,7 @@ const AppContent = () => {
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(fetchIngredients());
   }, [dispatch]);
 
   const handleModalClose = () => {

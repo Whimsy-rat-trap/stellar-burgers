@@ -30,10 +30,7 @@ export const OrderInfo: FC = () => {
     if (profileOrders.length === 0) {
       dispatch(fetchProfileOrders());
     }
-    if (ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, feedOrders.length, profileOrders.length, ingredients.length]);
+  }, [dispatch, feedOrders.length, profileOrders.length]);
 
   // Находим заказ по номеру
   const orderData = useMemo((): TOrder | null => {

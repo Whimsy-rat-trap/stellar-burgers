@@ -14,11 +14,7 @@ export const Feed: FC = () => {
 
   useEffect(() => {
     dispatch(fetchFeeds());
-    // Загружаем ингредиенты если их нет
-    if (ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length]);
+  }, [dispatch]);
 
   // Показываем прелоадер только если загружаются И заказы И ингредиенты
   if ((feedLoading && orders.length === 0) || ingredientsLoading) {

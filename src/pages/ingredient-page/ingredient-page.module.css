@@ -1,0 +1,13 @@
+.page {
+    margin: 120px auto;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 32px;
+}

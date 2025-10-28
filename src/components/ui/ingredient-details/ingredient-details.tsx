@@ -1,39 +1,55 @@
-import React, { FC, memo } from 'react';
+import React, { FC } from 'react';
 import styles from './ingredient-details.module.css';
-import { IngredientDetailsUIProps } from './type';
+import { TIngredient } from '@utils-types';
 
-export const IngredientDetailsUI: FC<IngredientDetailsUIProps> = memo(
-  ({ ingredientData }) => {
-    const { name, image_large, calories, proteins, fat, carbohydrates } =
-      ingredientData;
+type TIngredientDetailsUIProps = {
+  ingredientData: TIngredient;
+};
 
-    return (
-      <div className={styles.content}>
-        <img
-          className={styles.img}
-          alt='изображение ингредиента.'
-          src={image_large}
-        />
-        <h3 className='text text_type_main-medium mt-2 mb-4'>{name}</h3>
-        <ul className={`${styles.nutritional_values} text_type_main-default`}>
-          <li className={styles.nutritional_value}>
-            <p className={`text mb-2 ${styles.text}`}>Калории, ккал</p>
-            <p className={`text text_type_digits-default`}>{calories}</p>
-          </li>
-          <li className={styles.nutritional_value}>
-            <p className={`text mb-2 ${styles.text}`}>Белки, г</p>
-            <p className={`text text_type_digits-default`}>{proteins}</p>
-          </li>
-          <li className={styles.nutritional_value}>
-            <p className={`text mb-2 ${styles.text}`}>Жиры, г</p>
-            <p className={`text text_type_digits-default`}>{fat}</p>
-          </li>
-          <li className={styles.nutritional_value}>
-            <p className={`text mb-2 ${styles.text}`}>Углеводы, г</p>
-            <p className={`text text_type_digits-default`}>{carbohydrates}</p>
-          </li>
-        </ul>
-      </div>
-    );
-  }
-);
+export const IngredientDetailsUI: FC<TIngredientDetailsUIProps> = ({
+  ingredientData
+}) => {
+  const { image_large, name, calories, proteins, fat, carbohydrates } =
+    ingredientData;
+
+  return (
+    <div className={styles.content}>
+      <img src={image_large} alt={name} />
+      <p className='text text_type_main-medium mt-4 mb-8'>{name}</p>
+      <ul className={styles.nutritional_values}>
+        <li className={styles.nutritional_value}>
+          <span className='text text_type_main-default text_color_inactive'>
+            Калории,ккал
+          </span>
+          <span className='text text_type_digits-default text_color_inactive'>
+            {calories}
+          </span>
+        </li>
+        <li className={styles.nutritional_value}>
+          <span className='text text_type_main-default text_color_inactive'>
+            Белки,г
+          </span>
+          <span className='text text_type_digits-default text_color_inactive'>
+            {proteins}
+          </span>
+        </li>
+        <li className={styles.nutritional_value}>
+          <span className='text text_type_main-default text_color_inactive'>
+            Жиры,г
+          </span>
+          <span className='text text_type_digits-default text_color_inactive'>
+            {fat}
+          </span>
+        </li>
+        <li className={styles.nutritional_value}>
+          <span className='text text_type_main-default text_color_inactive'>
+            Углеводы,г
+          </span>
+          <span className='text text_type_digits-default text_color_inactive'>
+            {carbohydrates}
+          </span>
+        </li>
+      </ul>
+    </div>
+  );
+};
